@@ -5,14 +5,65 @@
 /* 10 Points */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
-
+  if (ALUControl == 0x0) {
+	*ALUresult = A + B;
+}
+else if (ALUControl == 0x1) {
+	*ALUresult = A - B;
+}
+else if (ALUControl == 0x2) {
+	if ((int)A < (int)B) {
+		*ALUresult = 1;
+	}
+	else {
+		*ALUresult = 0;
+	}
+}
+else if (ALUControl == 0x3) {
+	if (A < B) {
+		*ALUresult = 1;
+	}
+	else {
+		*ALUresult = 0;
+	}
+}
+else if (ALUControl == 0x4) {
+	*ALUresult = A & B;
+}
+else if (ALUControl == 0x5) {
+	*ALUresult = A | B;
+}
+else if (ALUControl == 0x6) {
+	*ALUresult = B << 16;
+}
+else if (ALUControl == 0x7) {
+	*ALUresult = ~A;
+}
+if (*ALUresult == 0) {
+	*Zero = 1;
+}
+else {
+	*Zero = 0;
+}
 }
 
 /* instruction fetch */
 /* 10 Points */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
+  if (PC % 4 != 0) {
+	return 1;
+}
+if (PC < 0x4000) {
+	return 1;
+}
+unsigned index = (PC - 0x4000) >> 2;
 
+if (index >= MEMSIZE) {
+	return 1;
+}
+*instruction = Mem[index];
+return 0;
 }
 
 
