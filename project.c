@@ -71,7 +71,13 @@ return 0;
 /* 10 Points */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
-
+	*op = (instruction >> 26) & 0x3F; //op code
+	*r1 = (instruction >> 21) & 0x1F; //rs 
+	*r2 = (instruction >> 16) & 0x1F; //rt
+	*r3 = (instruction >> 11) & 0x1F; //rd R-type
+	*funct = instruction & 0x3F; //function R-type
+	*offset = instruction & 0xFFFF; //address/immediate I-type
+	*jsec = instruction & 0x3FFFFFF; //target address J-type
 }
 
 
