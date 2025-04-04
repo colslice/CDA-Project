@@ -115,7 +115,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-	// terminate if there's nothing to do
+	// check for permission
 	if (MemRead != 1 && MemWrite != 1)
 		return 0;
 
@@ -145,13 +145,13 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
-	// exit if there's nothing to do
+	// check for permission
 	if (RegWrite != 1)
 		return;
 
 	unsigned destination;
 	
-	// If RegDst == 0, the destination r2. If RegDst == 1, destination is r3
+	// if RegDst == 0, the destination r2. if RegDst == 1, destination is r3
 	if (RegDst == 1)
 		destination = r3;
 	else
