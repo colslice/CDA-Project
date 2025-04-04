@@ -115,7 +115,29 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
+	// terminate if there's nothing to do
+	if (MemRead != 1 && MemWrite != 1)
+		return 0;
 
+	// halt if not word aligned
+	if ((ALUresult % 4) != 0)
+		return 1;
+
+	unsigned index = ALUresult >> 2;
+
+	// writing value of data2 to memory location given by ALUresult
+	if (MemWrite == 1)
+	{
+		Mem[index] = data2;
+	}
+
+	// reading content of memory location given by ALUresult to memdata
+	if (MemRead == 1)
+	{
+		*memdata = Mem[index];
+	}
+
+	return 0;
 }
 
 
@@ -123,7 +145,28 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
+	// exit if there's nothing to do
+	if (RegWrite != 1)
+		return;
 
+	unsigned destination;
+	
+	// If RegDst == 0, the destination r2. If RegDst == 1, destination is r3
+	if (RegDst == 1)
+		destination = r3;
+	else
+		destination = r2;
+	
+	unsigned data;
+
+	// if MemtoReg == 1, bring data from memory. Otherwise, bring data from ALUresult
+	if (MemtoReg == 1)
+		data = memdata;
+	else
+		data = ALUresult;
+
+	// write data to register
+	Reg[destination] = data;
 }
 
 /* PC update */
