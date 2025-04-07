@@ -102,18 +102,18 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
 	// printf("Offset: 8x%08x\n", offset);
+	
 	unsigned msb = (offset >> 15) & 1; // get the MSB
 	// printf("bit_15: %d\n", msb);
 
 	if (msb == 1){
-		*extended_value = offset | 0xFFFF0000;  // pad with 1
+		*extended_value = offset | 0xFFFF0000;  // pad with 1s
 	}
 	else{
-		*extended_value = offset & 0x0000FFFF;  // pad with 0
+		*extended_value = offset & 0x0000FFFF;  // pad with 0s
 	}
 
 	// printf("Extended: 8x%08x\n", *extended_value);
-
 }
 
 /* ALU operations */
