@@ -87,6 +87,24 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 int instruction_decode(unsigned op,struct_controls *controls)
 {
 
+	// decode for ALUOp
+	if (op == 0x0) { // R-type
+	controls->ALUOp = 10; 
+    } 
+    else if (op == 0x23) { // lw
+        controls->ALUOp = 00;
+    }
+    else if (op == 0x2B) { // sw
+        controls->ALUOp = 00;
+    }
+    else if (op == 0x04) { // beq
+        controls->ALUOp = 01;
+    }
+
+
+	
+
+	return 0;
 }
 
 /* Read Register */
@@ -120,7 +138,44 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
+	// if r type
+	if (ALUOp == 10){ 
+		if (funct == 0x20) {  // add
+	*ALUresult = data1 + data2;
+		}
+		else if (funct == 0x22) {  // sub
+			*ALUresult = data1 - data2;
+		}
+		else if (funct == 0x24) {  // and
+			*ALUresult = data1 & data2;
+		}
+		else if (funct == 0x25) {  // or
+			*ALUresult = data1 | data2;
+		}
+		else if (funct == 0x2A) {  // slt
+			if ((int)data1 < (int)data2)
+				*ALUresult = 1;
+			else
+				*ALUresult = 0;
+		}
+	}
+	// if beq
+	else if (ALUOp == 01) { 
+        *ALUresult = data1 - data2;  // Compare
+    }
+	// if lw/sw
+    else if (ALUOp == 00) {  
+        *ALUresult = data1 + extended_value;  // address calculation
+	}
 
+	// set zero flag
+	if (*ALUresult == 0) {
+		*Zero = 1;
+	} else {
+		*Zero = 0;
+	}
+
+	return 0;
 }
 
 /* Read / Write Memory */
