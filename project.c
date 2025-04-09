@@ -139,9 +139,9 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
 	// if r type
-	if (ALUOp == 10){ 
+	if (ALUOp == 2){ 
 		if (funct == 0x20) {  // add
-	*ALUresult = data1 + data2;
+        *ALUresult = data1 + data2;
 		}
 		else if (funct == 0x22) {  // sub
 			*ALUresult = data1 - data2;
@@ -160,11 +160,11 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 		}
 	}
 	// if beq
-	else if (ALUOp == 01) { 
+	else if (ALUOp == 1) { 
         *ALUresult = data1 - data2;  // Compare
     }
 	// if lw/sw
-    else if (ALUOp == 00) {  
+    else if (ALUOp == 0) {  
         *ALUresult = data1 + extended_value;  // address calculation
 	}
 
@@ -177,6 +177,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 
 	return 0;
 }
+
 
 /* Read / Write Memory */
 /* 10 Points */
