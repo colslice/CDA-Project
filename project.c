@@ -86,6 +86,16 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 /* 15 Points */
 int instruction_decode(unsigned op,struct_controls *controls)
 {	
+    //initialize
+    controls->RegDst = 0;
+    controls->Jump = 0;
+    controls->Branch = 0;
+    controls->MemRead = 0;
+    controls->MemtoReg = 0;
+    controls->ALUOp = 0; 
+    controls->MemWrite = 0;
+    controls->ALUSrc = 0;
+    controls->RegWrite = 0;
     if (op == 0x0) { // if r type
         controls->RegDst = 1;
         controls->Jump = 0;
@@ -152,6 +162,28 @@ int instruction_decode(unsigned op,struct_controls *controls)
         controls->ALUSrc = 1;  
         controls->RegWrite = 1;
     }
+    else if (op == 0xC) { // if andi
+        controls->RegDst = 0;
+        controls->Jump = 0;
+        controls->Branch = 0;
+        controls->MemRead = 0;
+        controls->MemtoReg = 0;
+        controls->ALUOp = 4;  
+        controls->MemWrite = 0;
+        controls->ALUSrc = 1;  
+        controls->RegWrite = 1;
+    }
+    else if (op == 0xD) { // if ori
+        controls->RegDst = 0;
+        controls->Jump = 0;
+        controls->Branch = 0;
+        controls->MemRead = 0;
+        controls->MemtoReg = 0;
+        controls->ALUOp = 5;  
+        controls->MemWrite = 0;
+        controls->ALUSrc = 1;  
+        controls->RegWrite = 1;
+    }
     else if (op == 0xF) { // if lui
         controls->RegDst = 0;
         controls->Jump = 0;
@@ -185,6 +217,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
         controls->ALUSrc = 1;  
         controls->RegWrite = 0;
     }
+    
     else {
         return 1;  // halt
     }
