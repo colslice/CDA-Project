@@ -5,13 +5,13 @@
 /* 10 Points */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
-  if (ALUControl == 0x0) {
+  if (ALUControl == 0x0) {  //addition
 	*ALUresult = A + B;
 }
-else if (ALUControl == 0x1) {
+else if (ALUControl == 0x1) {  //subtraction
 	*ALUresult = A - B;
 }
-else if (ALUControl == 0x2) {
+else if (ALUControl == 0x2) {  //signed set less than
 	if ((int)A < (int)B) {
 		*ALUresult = 1;
 	}
@@ -19,7 +19,7 @@ else if (ALUControl == 0x2) {
 		*ALUresult = 0;
 	}
 }
-else if (ALUControl == 0x3) {
+else if (ALUControl == 0x3) {  //unsigned set less than
 	if (A < B) {
 		*ALUresult = 1;
 	}
@@ -27,19 +27,19 @@ else if (ALUControl == 0x3) {
 		*ALUresult = 0;
 	}
 }
-else if (ALUControl == 0x4) {
+else if (ALUControl == 0x4) {  //AND
 	*ALUresult = A & B;
 }
-else if (ALUControl == 0x5) {
+else if (ALUControl == 0x5) {  //OR
 	*ALUresult = A | B;
 }
-else if (ALUControl == 0x6) {
+else if (ALUControl == 0x6) {  //shift left by 16
 	*ALUresult = B << 16;
 }
-else if (ALUControl == 0x7) {
+else if (ALUControl == 0x7) {  //NOT A
 	*ALUresult = ~A;
 }
-if (*ALUresult == 0) {
+if (*ALUresult == 0) {  //set zero flag
 	*Zero = 1;
 }
 else {
@@ -52,21 +52,21 @@ else {
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
   if (PC % 4 != 0) {
-	return 1;
+	return 1; //check if word alligned
 }
 if (PC < 0x4000) {
-	return 1;
+	return 1; //check if data or address is beyond memory
 }
-unsigned index = PC >> 2;
+unsigned index = PC >> 2; //translates PC address to word index
 
 // if (index >= MEMSIZE) {
-// 	return 1;
+// 	return 1; //check if beyond memory
 // }
-*instruction = Mem[index];
+*instruction = Mem[index]; //fetches instructions if all checks pass
 
 // printf("Instruction: 0x%08x \n", *instruction);
 
-return 0;
+return 0; //indicates a successful fetch
 }
 
 
